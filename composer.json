@@ -1,0 +1,25 @@
+{
+    "name": "urbancloud/smc",
+    "description": "service monitor center",
+    "type": "project",
+    "require": {
+        "php": ">= 5.6",
+        "ext-redis": "*",
+        "ext-swoole": ">= 1.8",
+        "google/protobuf": "dev-php-generated-dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "enze",
+            "email": "enzewei@gmail.com"
+        }
+    ],
+	"autoload" : {
+		"psr-4" : {
+			"smc\\" : "",
+			"Proto\\" : "protocol/Proto",
+			"GPBMetadata\\": "protocol/GPBMetadata"
+		}
+	}
+}

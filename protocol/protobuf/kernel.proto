@@ -1,0 +1,7 @@
+syntax = "proto3";
+import "header.proto";
+package proto.monitor;
+message Kernel {
+	repeated proto.common.Header header = 1;
+	string message_content = 2; 
+}

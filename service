@@ -1,0 +1,54 @@
+#!/usr/bin/env /usr/local/bin/php
+<?php
+/**
+ * service console
+ *
+ * @category php
+ * @package service
+ * @author enze.wei <[enzewei@gmail.com]>
+ * @copyright 2018
+ * @version 1.0.1
+ */
+set_time_limit(0);
+
+error_reporting(E_ALL & ~E_NOTICE);
+
+$hostname = php_uname('n');
+
+defined('ENV_LOCAL') or define('ENV_LOCAL', 'local');
+defined('ENV_DEV') or define('ENV_LOCAL', 'dev');
+defined('ENV_TEST') or define('ENV_LOCAL', 'test');
+defined('ENV_GRAY') or define('ENV_LOCAL', 'gray');
+defined('ENV_RELEASE') or define('ENV_LOCAL', 'release');
+
+if (strstr($hostname, 'web')) {
+	defined('SERVER_ENV') or define('SERVER_ENV', ENV_RELEASE);
+} else if (strstr($hostname, 'gray')) {
+	defined('SERVER_ENV') or define('SERVER_ENV', ENV_GRAY);
+} else if (strstr($hostname, 'test')) {
+	defined('SERVER_ENV') or define('SERVER_ENV', ENV_TEST);
+} else if (strstr($hostname, 'dev')) {
+	defined('SERVER_ENV') or define('SERVER_ENV', ENV_DEV);
+} else {
+	defined('SERVER_ENV') or define('SERVER_ENV', ENV_LOCAL);
+}
+
+defined('SERVICE_ROOT') or define('SERVICE_ROOT', __DIR__);
+defined('CONFIG_ROOT') or define('CONFIG_ROOT', SERVICE_ROOT . DIRECTORY_SEPARATOR . 'config');
+
+// fcgi doesn't have STDIN and STDOUT defined by default
+defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
+defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
+
+require_once SERVICE_ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+$config = include_once(CONFIG_ROOT . DIRECTORY_SEPARATOR . 'params-' . SERVER_ENV . '.php');
+$components = include_once(CONFIG_ROOT . DIRECTORY_SEPARATOR . 'main-' . SERVER_ENV . '.php');
+
+$service = new smc\Application($config, $components);
+/*
+ * remove ./service
+ */
+array_shift($argv);
+$code = $service->run(...$argv);
+exit($code);
