@@ -16,10 +16,10 @@ error_reporting(E_ALL & ~E_NOTICE);
 $hostname = php_uname('n');
 
 defined('ENV_LOCAL') or define('ENV_LOCAL', 'local');
-defined('ENV_DEV') or define('ENV_LOCAL', 'dev');
-defined('ENV_TEST') or define('ENV_LOCAL', 'test');
-defined('ENV_GRAY') or define('ENV_LOCAL', 'gray');
-defined('ENV_RELEASE') or define('ENV_LOCAL', 'release');
+defined('ENV_DEV') or define('ENV_DEV', 'dev');
+defined('ENV_TEST') or define('ENV_TEST', 'test');
+defined('ENV_GRAY') or define('ENV_GRAY', 'gray');
+defined('ENV_RELEASE') or define('ENV_RELEASE', 'release');
 
 if (strstr($hostname, 'web')) {
 	defined('SERVER_ENV') or define('SERVER_ENV', ENV_RELEASE);
