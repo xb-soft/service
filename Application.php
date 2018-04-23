@@ -49,7 +49,7 @@ class Application {
 		if (true === empty($command) || true === in_array($command, self::COMMAND_HELP)) {
 			return $this->_showService();
 		} else {
-			$className = ucfirst($command) . self::SERVICE_SUFFIX;
+			$className = ucfirst($command) . ucfirst(self::SERVICE_SUFFIX);
 			$className = self::SERVICE_NAMESPACE . '\\' . $className;
 			$method = array_shift($args);
 			$method = self::SERVICE_COMMAND_PREFIX . ucfirst($method);
