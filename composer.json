@@ -19,7 +19,8 @@
 		"psr-4" : {
 			"smc\\" : "",
 			"Proto\\" : "protocol/Proto",
-			"GPBMetadata\\": "protocol/GPBMetadata"
+			"GPBMetadata\\": "protocol/GPBMetadata",
+			"package\\" : "package"
 		}
 	}
 }

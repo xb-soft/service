@@ -1,29 +1,29 @@
 <?php
+/**
+ * base model package
+ *
+ * @category php
+ * @package service.smc.models
+ * @author enze.wei <[enzewei@gmail.com]>
+ * @version 1.0.1
+ */
 namespace smc\models;
 
+/*
+ * import reflect
+ */
 use \ReflectionClass;
 use \ReflectionMethod;
 
+/*
+ * import trait
+ */
 use smc\traits\Magic as MagicTrait;
 use smc\traits\Data as DataTrait;
 
 class Base {
 	
 	use MagicTrait, DataTrait;
-	
-	const PACKAGE_FLAG = 0x5842;
-	/*
-	 * 数据包类型长度 32bit
-	 */
-	const PACKAGE_TYPE_LEN = 2 << 4;
-	/*
-	 * 数据包命令长度 64bit
-	 */
-	const PACKAGE_CMD_LEN = 2 << 5;
-	/*
-	 * 数据包包体内容长度 32bit
-	 */
-	const PACKAGE_CONTENT_LEN = 2 << 4;
 	
 	public static $param = [];
 	public static $components = [];
@@ -39,7 +39,15 @@ class Base {
 		});
 	}
 
-	public static function init($param, $components) {
+	/**
+	 * 加载配置文件
+	 *
+	 * @param array $param config/param-env.php
+	 * @param array $components config/main-env.php
+	 *
+	 * @return self instance
+	 */
+	public static function init(array $param, array $components) {
 		static::$param = $param;
 		static::$components = $components;
 		

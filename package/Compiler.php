@@ -1,13 +1,34 @@
 <?php
-namespace smc\models;
-
-use smc\models\Base as BaseModel;
+/**
+ * compiler package
+ *
+ * @category php
+ * @package service.smc.package
+ * @author enze.wei <[enzewei@gmail.com]>
+ * @version 1.0.1
+ */
+namespace package;
 
 use smc\traits\Data as DataTrait;
 
-class Package extends BaseModel {
+class Compiler {
 	
 	use DataTrait;
+	
+	/*
+	 * 数据包类型长度 32bit
+	 */
+	const PACKAGE_TYPE_LEN = 2 << 4;
+	/*
+	 * 数据包命令长度 64bit
+	 */
+	const PACKAGE_CMD_LEN = 2 << 5;
+	/*
+	 * 数据包包体内容长度 32bit
+	 */
+	const PACKAGE_CONTENT_LEN = 2 << 4;
+
+	
 	
 	public $getter = [];
 	public $setter = [];

@@ -1,12 +1,28 @@
 <?php
-namespace smc\models\package;
+/**
+ * compiler package
+ *
+ * @category php
+ * @package service.smc.package
+ * @author enze.wei <[enzewei@gmail.com]>
+ * @version 1.0.1
+ */
+namespace package\compiler;
 
-use \Google\Protobuf\Internal\Message as GoogleProtobufMessage;
+use Google\Protobuf\Internal\Message as GoogleProtobufMessage;
 
-use smc\models\Package;
+use package\Compiler;
 
-class Parse extends Package {
-	
+class Parser extends Compiler {
+
+	/**
+	 * 解析数据包头
+	 *
+	 * @param GoogleProtobufMessage $headers
+	 * @param StdClass $container 引用传递
+	 *
+	 * @return void
+	 */
 	private function _parseHeader($headers, \StdClass & $container) {
 		$getter = [];
 		foreach ($headers as $header) {
@@ -26,6 +42,14 @@ class Parse extends Package {
 		}
 	}
 	
+	/**
+	 * 解析数据包
+	 *
+	 * @param string $bin bin data
+	 * @param GoogleProtobufMessage $proto
+	 *
+	 * @return StdClass
+	 */
 	public function parsePackage($bin, GoogleProtobufMessage $proto) {
 		$proto->clear();
 		$reflection = new \ReflectionClass($proto);

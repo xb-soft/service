@@ -32,7 +32,7 @@ trait Magic {
 	
 	public function __get($name) {
 		$getter = 'get' . ucfirst($name);
-		if (true === method_exists($getter, get_class())) {
+		if (true === method_exists(get_class(), $getter)) {
 			return $this->$getter();
 		} else {
 			$name = strtolower($name);

@@ -28,6 +28,7 @@ class Monitor extends BaseModule {
 	
 	public function onWorkerStart($server, $workerId) {
 		if (0 == $workerId) {
+			echo "start monitor service now...\n";
 			foreach ($this->models->monitor->getServiceData() as $service) {
 				$server->task($service);
 			}
@@ -35,20 +36,18 @@ class Monitor extends BaseModule {
 	}
 
 	public function onReceive($server, $fd, $reactorId, $data) {
-		$data = $this->models->monitor->registerServer($data);
-		if (false === $data) {
-			$reply = $this->error('-100007');
+		echo "register service now...\n";
+		if (true === $this->models->monitor->registerService($data)) {
+			echo "register service success\n";
 		} else {
-			$reply = $this->success(true);
+			echo "register service fail\n";
 		}
-		$bin = $this->models->monitor->buildPackage('register', Command::SERVICE_REGISTER, strlen($reply), $reply);
+
 		/*
 		 * reload new register service
 		 */
-		$server->send($fd, $bin);
-		if (false !== $data) {
-			$server->task($this->models->monitor->reloadData);
-		}
+		echo "reload monitor now...\n";
+		$server->task($this->models->monitor->reloadData);
 	}
 
 	public function onTask($server, $taskId, $workerId, $data) {
@@ -64,13 +63,17 @@ class Monitor extends BaseModule {
 			connect: {
 				if ($i < self::MAX_RETRY_TIMES) {
 					if (false === $this->models->monitor->heartbeat(...$data)) {
+						echo "retry send heartbeat now...\n";
 						$i++;
 						goto retry;
+					} else {
+						return true;
 					}
 				} else {
+					echo "remove service now...\n";
+					$server->clearTimer($tickId);
 					if (true === $this->models->monitor->remove(...$data)) {
-						$server->clearTimer($tickId);
-					} else {
+						echo "remove service success\n";
 					}
 				}
 			}
@@ -78,10 +81,10 @@ class Monitor extends BaseModule {
 	}
 
 	public function onFinish($server, $taskId, $data) {
-		//empty
+		echo "monitor success\n";
 	}
 
 	public function onClose($server, $fd, $reactorId) {
-		//empty
+		echo "close connect\n";
 	}
 }
